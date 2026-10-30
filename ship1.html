@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="data:," />
+  <title>SHIP1 · 新伊甸舰船图鉴</title>
+  <script type="module" crossorigin src="./assets/ship1-BOvSfrc7.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/three.module-COtkm6BZ.js">
+  <link rel="stylesheet" crossorigin href="./assets/ship1-DsiBdEp_.css">
+</head>
+<body>
+  <div id="s1-gl"></div>
+  <div id="s1-labels"></div>
+
+  <header class="s1-top">
+    <a class="s1-brand" href="./" title="返回首页">
+      <span class="s1-code">SHIP1</span>
+      <span class="s1-title">新伊甸舰船图鉴<small>EVE Online · Ship Archive</small></span>
+    </a>
+    <nav class="s1-pages" aria-label="展示与下载">
+      <button data-page="viewer" class="active">模型展示</button>
+      <button data-page="compare">尺寸对比</button>
+      <button id="s1-print-open" type="button" aria-haspopup="dialog">下载当前模型</button>
+    </nav>
+  </header>
+
+  <aside class="s1-side">
+    <div class="s1-seg s1-coll" id="s1-coll"><button data-coll="ships" class="active">舰船</button><button data-coll="structures">建筑</button></div>
+    <div class="s1-races" id="s1-races"></div>
+    <p class="s1-motto" id="s1-race-motto"></p>
+    <div class="s1-seg s1-techs" id="s1-techs"></div>
+    <ol class="s1-classes" id="s1-classes"></ol>
+  </aside>
+
+  <article class="s1-info" id="s1-info"></article>
+
+  <section class="s1-skins">
+    <h3>涂装 <span id="s1-skin-name"></span></h3>
+    <div class="s1-skin-tools">
+      <select id="s1-skin-source" aria-label="涂装来源">
+        <option value="official">官方 SKIN · 材质预览</option>
+        <option value="serenity">官方 SKIN · 国服</option>
+        <option value="tranquility">官方 SKIN · 国际服</option>
+        <option value="serenity-materials">国服外观材质 · 自由搭配</option>
+        <option value="palettes">通用配色</option>
+      </select>
+      <input id="s1-skin-search" type="search" placeholder="搜索涂装名称 / ID" aria-label="搜索涂装" />
+    </div>
+    <div class="s1-skin-list" id="s1-skin-list"></div>
+    <p id="s1-skin-note" class="s1-skin-note"></p>
+  </section>
+
+  <footer class="s1-dock s1-dock-viewer">
+    <div class="s1-modes" id="s1-modes"></div>
+    <div class="s1-cut" id="s1-cut">
+      <label for="s1-cut-pos">剖切</label>
+      <input type="range" id="s1-cut-pos" min="-1" max="1" step="0.01" value="0" />
+      <div class="s1-seg" id="s1-cut-axis"><button data-axis="z" class="active">纵剖</button><button data-axis="y">横剖</button></div>
+    </div>
+    <div class="s1-seg s1-xform" id="s1-xform"></div>
+    <div class="s1-views" id="s1-views"></div>
+    <div class="s1-toggles" id="s1-toggles"></div>
+  </footer>
+
+  <footer class="s1-dock s1-dock-compare">
+    <div class="s1-seg" id="s1-sets"></div>
+    <div class="s1-refs" id="s1-refs"></div>
+    <div class="s1-scale" id="s1-scale"></div>
+  </footer>
+
+  <div class="s1-credit">EVE Online 及全部舰船模型、贴图、名称与数据 © CCP hf.（官方客户端资源 / ESI / Image Server）· 依据 EVE 内容创作者条款使用 · 非官方粉丝作品</div>
+
+  <div id="s1-busy"></div>
+
+  <dialog class="s1-print" id="s1-print-dialog" aria-labelledby="s1-print-title">
+    <div class="s1-print-head">
+      <div><small>STL · 3D PRINT</small><h2 id="s1-print-title">下载当前模型</h2></div>
+      <button id="s1-print-close" type="button" aria-label="关闭下载面板">×</button>
+    </div>
+    <p class="s1-print-name" id="s1-print-name"></p>
+    <p class="s1-print-scope">支持图鉴中的全部舰船及建筑。先在左侧选择需要的模型，再在此生成 STL 下载。</p>
+    <form id="s1-print-form">
+      <label class="s1-print-wide">导出版本<select id="s1-print-mode"><option value="solid">打印版 STL · 封闭重建</option><option value="mesh">原始网格 STL · 保留细节</option></select></label>
+      <div class="s1-print-fields">
+        <label>最大尺寸 / mm<input id="s1-print-size" type="number" min="20" max="500" step="1" value="150" required /></label>
+        <label>重建质量<select id="s1-print-resolution"><option value="128">快速 · 128</option><option value="192" selected>标准 · 192</option><option value="256">精细 · 256</option></select></label>
+        <label>加厚目标 / mm<input id="s1-print-wall" type="number" min="0.4" max="5" step="0.1" value="0.8" required /></label>
+      </div>
+      <p class="s1-print-hint" id="s1-print-hint"></p>
+      <p class="s1-print-scope">仅导出当前姿态的真实舰体与已选择的子系统，不含喷焰、航行灯、舱室示意、全息投影和涂装特效附件。STL 不含颜色或贴图。</p>
+      <div class="s1-print-actions"><button id="s1-print-generate" type="submit">生成 STL</button><button id="s1-print-cancel" type="button" hidden>取消生成</button></div>
+    </form>
+    <p class="s1-print-status" id="s1-print-status" role="status" aria-live="polite"></p>
+    <progress id="s1-print-progress" max="1" value="0" hidden></progress>
+    <div class="s1-print-result" id="s1-print-result" hidden>
+      <p id="s1-print-summary"></p>
+      <div class="s1-print-links"><a id="s1-print-stl" download>下载 STL</a><a id="s1-print-report" download>下载检查报告</a></div>
+    </div>
+    <p class="s1-print-foot">导入切片软件后检查摆放、支撑、壁厚与打印机参数，再生成该打印机的 G-code。封闭检查不等于已经完成打印验证。</p>
+  </dialog>
+
+  <div id="s1-loader">
+    <div class="s1-loader-ring"></div>
+    <div class="s1-loader-text">正在初始化星空与渲染管线…</div>
+  </div>
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>
